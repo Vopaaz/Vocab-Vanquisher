@@ -3,7 +3,6 @@
 import { app, protocol, BrowserWindow } from 'electron'
 import {
   createProtocol,
-  installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -12,13 +11,15 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 let win
 
 // Scheme must be registered before the app is ready
-protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true, standard: true } }])
+protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600, webPreferences: {
-    nodeIntegration: true
-  } })
+  win = new BrowserWindow({
+    width: 800, height: 600, webPreferences: {
+      nodeIntegration: true
+    }
+  })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -87,3 +88,30 @@ if (isDevelopment) {
     })
   }
 }
+
+if (isDevelopment) {
+  const Store = require('electron-store');
+  const store = new Store();
+  store.clear()
+}
+
+import { readVocabBook } from "./main-process/reader";
+import { ipcMain } from "electron";
+import { getBatch, getCurrent, getOrder, setCurrent } from "./main-process/store";
+const BookName = "GRE3000";
+
+readVocabBook(BookName).then((content) => {
+  let batch = getBatch(BookName)
+  let order = getOrder(BookName, content.length)
+
+  ipcMain.on("get-next-batch", (event) => {
+    let current = getCurrent(BookName)
+    let initialCurrent = current
+    let res = []
+    for (; current < initialCurrent + batch && current < order.length; current++) {
+      res.push(content[order[current]])
+    }
+    setCurrent(BookName, current)
+    event.reply("next-batch", res)
+  })
+})
