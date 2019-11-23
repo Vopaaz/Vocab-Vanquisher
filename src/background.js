@@ -95,23 +95,4 @@ if (isDevelopment) {
   store.clear()
 }
 
-import { readVocabBook } from "./main-process/reader";
-import { ipcMain } from "electron";
-import { getBatch, getCurrent, getOrder, setCurrent } from "./main-process/store";
-const BookName = "GRE3000";
-
-readVocabBook(BookName).then((content) => {
-  let batch = getBatch(BookName)
-  let order = getOrder(BookName, content.length)
-
-  ipcMain.on("get-next-batch", (event) => {
-    let current = getCurrent(BookName)
-    let initialCurrent = current
-    let res = []
-    for (; current < initialCurrent + batch && current < order.length; current++) {
-      res.push(content[order[current]])
-    }
-    setCurrent(BookName, current)
-    event.reply("next-batch", res)
-  })
-})
+import "./main-process/main"

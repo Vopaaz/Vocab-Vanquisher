@@ -1,9 +1,12 @@
 <template>
-  <div>Text: {{ vocabulary }}</div>
+  <div>
+    Text: {{ vocabulary }}
+    <plan-creator ref="planCreator" />
+  </div>
 </template>
 
 <script>
-import { ipcRenderer } from "electron";
+import PlanCreator from "../components/PlanCreator";
 
 export default {
   data: function() {
@@ -11,12 +14,12 @@ export default {
       vocabulary: null
     };
   },
-  created() {
-    setInterval(() => {
-      ipcRenderer.send("get-next-batch");
-    }, 2000);
-    ipcRenderer.on("next-batch", (event, data) => {
-      this.vocabulary = data;
+  components: {
+    PlanCreator
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.planCreator.open();
     });
   }
 };
