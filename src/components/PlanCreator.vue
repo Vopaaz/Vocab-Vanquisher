@@ -1,20 +1,22 @@
 <template>
-  <ui-modal ref="createPlan" title="Create Plan" size="auto" dismiss-on="close-button esc">
-    <ui-select label="Vocabulary Book" :options="['GRE3000']" v-model="book" @input="selectBook"></ui-select>
-    <ui-textbox label="Plan Name" v-model="planName"></ui-textbox>
-    <ui-textbox label="Number of words in each batch" type="number" :min="1" v-model="batch"></ui-textbox>
-    <ui-textbox
-      label="Number of batches for each round of review"
-      type="number"
-      :min="0"
-      placeholder="Set as 0 to disable review"
-      v-model="reviewAfterBatch"
-    ></ui-textbox>
-    <ui-checkbox v-model="shuffle">Shuffle the vocabularies</ui-checkbox>
-    <ui-button color="primary" @click="onCreate">Create</ui-button>&nbsp;
-    <ui-button @click="onCancel">Cancel</ui-button>
+  <div>
+    <ui-modal ref="createPlan" title="Create Plan" size="auto" dismiss-on="close-button esc">
+      <ui-select label="Vocabulary Book" :options="['GRE3000']" v-model="book" @input="selectBook"></ui-select>
+      <ui-textbox label="Plan Name" v-model="planName"></ui-textbox>
+      <ui-textbox label="Number of words in each batch" type="number" :min="1" v-model="batch"></ui-textbox>
+      <ui-textbox
+        label="Number of batches for each round of review"
+        type="number"
+        :min="0"
+        placeholder="Set as 0 to disable review"
+        v-model="reviewAfterBatch"
+      ></ui-textbox>
+      <ui-checkbox v-model="shuffle">Shuffle the vocabularies</ui-checkbox>
+      <ui-button color="primary" @click="onCreate">Create</ui-button>&nbsp;
+      <ui-button @click="onCancel">Cancel</ui-button>
+    </ui-modal>
     <ui-snackbar-container ref="snackbarContainer" position="center"></ui-snackbar-container>
-  </ui-modal>
+  </div>
 </template>
 
 <script>

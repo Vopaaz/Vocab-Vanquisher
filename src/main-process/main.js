@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import { getAllPlans, getActivePlan, createPlan, setActivePlanName } from "./plan";
+import { getAllPlans, getActivePlan, createPlan, setActivePlanName, deletePlan } from "./plan";
 
 function replyPlanInfo(event) {
   event.reply("plan-info", {
@@ -46,4 +46,18 @@ ipcMain.on("get-current-batch", (event) => {
     }
     event.reply("current-batch", res)
   }
+})
+
+ipcMain.on("delete-plan", (event, arg) => {
+  deletePlan(arg)
+  if (getActivePlan() === undefined) {
+    let allPlans = getAllPlans()
+    if (allPlans.length === 0) {
+      setActivePlanName(undefined)
+    }
+    else {
+      setActivePlanName(allPlans[0].name)
+    }
+  }
+  replyPlanInfo(event)
 })

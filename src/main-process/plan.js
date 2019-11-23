@@ -2,6 +2,7 @@ const Store = require('electron-store');
 const store = new Store();
 import { readVocabBook } from "./reader";
 import { createOrder } from "./util";
+import { type } from "os";
 
 function getAllPlans() {
   let plans = store.get("plans")
@@ -12,13 +13,20 @@ function getAllPlans() {
   return plans
 }
 
+function setAllPlans(allPlans) {
+  store.set("plans", allPlans)
+}
+
 function getActivePlanName() {
   return store.get("active-plan-name")
 }
 
 function getActivePlan() {
+  return getPlanByName(getActivePlanName())
+}
+
+function getPlanByName(name) {
   let plans = getAllPlans()
-  let name = getActivePlanName()
   for (const plan of plans) {
     if (plan.name === name) {
       return plan
@@ -28,14 +36,11 @@ function getActivePlan() {
 }
 
 function setActivePlanName(name) {
-  let plans = getAllPlans()
-  for (const plan of plans) {
-    if (plan.name === name) {
-      store.set("active-plan-name", name)
-      return
-    }
+  if (name === undefined) {
+    store.delete("active-plan-name")
+  } else {
+    store.set("active-plan-name", name)
   }
-  throw new Error(`No plan named ${name}.`)
 }
 
 function createPlan(name, book, batch, reviewAfterBatch, shuffle) {
@@ -74,6 +79,20 @@ function updatePlanReviewCurrent(reviewCurrent) {
   }
 }
 
+function deletePlan(plan) {
+  let planName
+  if (typeof plan === "string") {
+    planName = plan
+  } else {
+    planName = plan.name
+  }
+  let allPlans = getAllPlans()
+  let restPlans = allPlans.filter((p) => {
+    return p.name !== planName
+  })
+  setAllPlans(restPlans)
+}
+
 function Plan(name, book, batch, reviewAfterBatch, shuffle, data, order) {
   return {
     name,
@@ -95,7 +114,8 @@ export {
   setActivePlanName,
   getActivePlan,
   updatePlanCurrent,
-  updatePlanReviewCurrent
+  updatePlanReviewCurrent,
+  deletePlan
 }
 
 

@@ -34,8 +34,8 @@ export default {
           label: "Create New Plan"
         },
         {
-          key: "switch",
-          label: "Switch Plan"
+          key: "manage",
+          label: "Manage Plan"
         }
       ]
     };
