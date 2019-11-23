@@ -1,8 +1,9 @@
+/* eslint-disable */
+
 const Store = require('electron-store');
 const store = new Store();
 import { readVocabBook } from "./reader";
 import { createOrder } from "./util";
-import { type } from "os";
 
 function getAllPlans() {
   let plans = store.get("plans")
@@ -65,18 +66,15 @@ function createPlan(name, book, batch, reviewAfterBatch, shuffle) {
   })
 }
 
-function updatePlanCurrent(current) {
-  let plan = getActivePlan()
-  if (plan !== undefined) {
-    plan.current = current
+function updateActivePlan(plan) {
+  let plans = getAllPlans()
+  for (let i = 0; i < plans.length; i++) {
+    if (plans[i].name === plan.name) {
+      plans[i] = plan
+    }
+    break
   }
-}
-
-function updatePlanReviewCurrent(reviewCurrent) {
-  let plan = getActivePlan()
-  if (plan !== undefined) {
-    plan.reviewCurrent = reviewCurrent
-  }
+  setAllPlans(plans)
 }
 
 function deletePlan(plan) {
@@ -113,8 +111,7 @@ export {
   createPlan,
   setActivePlanName,
   getActivePlan,
-  updatePlanCurrent,
-  updatePlanReviewCurrent,
+  updateActivePlan,
   deletePlan
 }
 

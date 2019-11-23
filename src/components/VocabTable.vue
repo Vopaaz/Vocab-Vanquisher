@@ -65,12 +65,13 @@ export default {
     }
   },
   mounted() {
-    /* eslint-disable */
     let self = this;
     window.addEventListener("keypress", e => {
       if (!self.$store.state.hasModal) {
         if (e.keyCode === 32) {
           self.hasDef = !self.hasDef;
+        } else if (e.keyCode === 13) {
+          self.$store.commit("nextBatch")
         }
       }
     });

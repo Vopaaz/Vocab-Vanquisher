@@ -1,10 +1,13 @@
 import { ipcMain } from "electron";
-import { getAllPlans, getActivePlan, createPlan, setActivePlanName, deletePlan } from "./plan";
+import { getAllPlans, getActivePlan, createPlan, setActivePlanName, deletePlan, updateActivePlan } from "./plan";
 
-function replyPlanInfo(event) {
+function replyPlanInfo(event, activePlan) {
+  if (activePlan === undefined){
+    activePlan = getActivePlan()
+  }
   event.reply("plan-info", {
     allPlans: getAllPlans(),
-    activePlan: getActivePlan()
+    activePlan: activePlan
   })
 }
 
@@ -27,27 +30,6 @@ ipcMain.on("switch-plan", (event, planName) => {
   }
 })
 
-
-ipcMain.on("get-current-batch", (event) => {
-  let plan = getActivePlan()
-  if (plan === undefined) {
-    event.reply("backend-error", "Please create a plan first!")
-    return
-  }
-  let res = []
-  if (plan.on === "current") {
-    for (let i = 0; i < plan.batch && plan.current + i < plan.order.length; i++) {
-      res.push(plan.data[plan.order[plan.current + i]])
-    }
-  }
-  else {
-    for (let i = 0; i < plan.batch && plan.reviewCurrent + i < plan.order.length; i++) {
-      res.push(plan.data[plan.order[plan.reviewCurrent + i]])
-    }
-    event.reply("current-batch", res)
-  }
-})
-
 ipcMain.on("delete-plan", (event, arg) => {
   deletePlan(arg)
   if (getActivePlan() === undefined) {
@@ -60,4 +42,12 @@ ipcMain.on("delete-plan", (event, arg) => {
     }
   }
   replyPlanInfo(event)
+})
+
+ipcMain.on("update-active-plan", (event, plan) => {
+  if(getActivePlan().name !== plan.name){
+    throw Error("Updated plan is not the active plan.")
+  }
+  updateActivePlan(plan)
+  replyPlanInfo(event, plan)
 })
