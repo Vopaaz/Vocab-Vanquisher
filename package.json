@@ -12,6 +12,7 @@
     "postuninstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "bootstrap-vue": "^2.1.0",
     "core-js": "^3.3.2",
     "csv-parse": "^4.8.2",
     "electron-store": "^5.1.0",

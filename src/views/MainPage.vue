@@ -1,7 +1,7 @@
 <template>
   <div>
     <tool-bar @create="$refs.planCreator.open()" @manage="$refs.planManager.open()" />
-    Text: {{ vocabulary }}
+    <vocab-table />
     <plan-creator ref="planCreator" />
     <plan-manager ref="planManager" />
     <ui-snackbar-container ref="snackbarContainer" position="center"></ui-snackbar-container>
@@ -12,6 +12,7 @@
 import PlanCreator from "../components/PlanCreator";
 import PlanManager from "../components/PlanManager";
 import ToolBar from "../components/ToolBar";
+import VocabTable from "../components/VocabTable";
 import { ipcRenderer } from "electron";
 
 export default {
@@ -23,7 +24,8 @@ export default {
   components: {
     PlanCreator,
     PlanManager,
-    ToolBar
+    ToolBar,
+    VocabTable
   },
   mounted() {
     ipcRenderer.send("get-plan-info");
