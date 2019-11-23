@@ -8,14 +8,21 @@
         label="Number of batches for each round of review"
         type="number"
         :min="0"
-        placeholder="Set as 0 to disable review"
+        help="Set as 0 to disable review"
         v-model="reviewAfterBatch"
       ></ui-textbox>
       <ui-checkbox v-model="shuffle">Shuffle the vocabularies</ui-checkbox>
       <ui-button color="primary" @click="onCreate">Create</ui-button>&nbsp;
       <ui-button @click="onCancel">Cancel</ui-button>
+      <br />
+      <br />
+      <ui-alert
+        v-if="showAlert"
+        type="error"
+        :removeIcon="true"
+        :dismissible="false"
+      >Some fields are incomplete or has wrong value.</ui-alert>
     </ui-modal>
-    <ui-snackbar-container ref="snackbarContainer" position="center"></ui-snackbar-container>
   </div>
 </template>
 
@@ -26,10 +33,11 @@ export default {
   data: function() {
     return {
       book: "",
-      batch: 5,
+      batch: "5",
       planName: "",
-      reviewAfterBatch: 0,
-      shuffle: true
+      reviewAfterBatch: "0",
+      shuffle: true,
+      showAlert: false
     };
   },
   methods: {
@@ -42,20 +50,25 @@ export default {
       this.$refs.createPlan.open();
     },
     onCreate: function() {
-      if (this.book === "" || this.planName === "") {
-        this.$refs.snackbarContainer.createSnackbar({
-          duration: 3000,
-          message: "Some fields are incomplete."
-        });
-      } else {
+      if (
+        this.book !== "" &&
+        this.planName !== "" &&
+        this.batch !== "" &&
+        parseInt(this.batch) > 0 &&
+        this.reviewAfterBatch !== "" &&
+        parseInt(this.reviewAfterBatch) >= 0
+      ) {
         ipcRenderer.send("create-new-plan", {
           name: this.planName,
           book: this.book,
-          batch: this.batch,
-          reviewAfterBatch: this.reviewAfterBatch,
+          batch: parseInt(this.batch),
+          reviewAfterBatch: parseInt(this.reviewAfterBatch),
           shuffle: this.shuffle
         });
         this.$refs.createPlan.close();
+        this.showAlert = false;
+      } else {
+        this.showAlert = true;
       }
     },
     onCancel: function() {

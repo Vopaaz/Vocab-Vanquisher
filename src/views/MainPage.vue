@@ -4,6 +4,7 @@
     Text: {{ vocabulary }}
     <plan-creator ref="planCreator" />
     <plan-manager ref="planManager" />
+    <ui-snackbar-container ref="snackbarContainer" position="center"></ui-snackbar-container>
   </div>
 </template>
 
@@ -34,6 +35,12 @@ export default {
           this.$refs.planCreator.open();
         });
       }
+    });
+    ipcRenderer.on("backend-error", (event, err) => {
+      this.$refs.snackbarContainer.createSnackbar({
+        duration: 3000,
+        message: err
+      });
     });
   }
 };

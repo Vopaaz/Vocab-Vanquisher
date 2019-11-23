@@ -10,7 +10,6 @@
       <ui-button color="primary" @click="onSwitch">Switch</ui-button>&nbsp;
       <ui-button @click="onDelete" color="red">Delete</ui-button>
     </ui-modal>
-    <ui-snackbar-container ref="snackbarContainer" position="center"></ui-snackbar-container>
   </div>
 </template>
 
@@ -44,8 +43,6 @@ export default {
         ipcRenderer.send("switch-plan", this.planName);
         this.$refs.managePlan.close();
         this.planName = "";
-      } else {
-        this.triggerSnackbar();
       }
     },
     onDelete: function() {
@@ -53,15 +50,7 @@ export default {
         ipcRenderer.send("delete-plan", this.planName);
         this.$refs.managePlan.close();
         this.planName = "";
-      } else {
-        this.triggerSnackbar();
       }
-    },
-    triggerSnackbar() {
-      this.$refs.snackbarContainer.createSnackbar({
-        duration: 3000,
-        message: "Please choose a plan."
-      });
     }
   }
 };
