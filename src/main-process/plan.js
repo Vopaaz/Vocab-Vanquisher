@@ -44,6 +44,7 @@ function createPlan(name, book, batch, reviewAfterBatch, shuffle) {
     for (const plan of plans) {
       if (plan.name === name) {
         reject("Plan name is duplicated.")
+        return
       }
     }
     readVocabBook(book).then((content) => {
@@ -59,27 +60,18 @@ function createPlan(name, book, batch, reviewAfterBatch, shuffle) {
   })
 }
 
-function updatePlanCurrent(name, current) {
-  let plans = getAllPlans()
-  for (const plan of plans) {
-    if (plan.name === name) {
-      plan.current = current
-      return
-    }
+function updatePlanCurrent(current) {
+  let plan = getActivePlan()
+  if (plan !== undefined) {
+    plan.current = current
   }
-  throw new Error(`No plan named ${name}.`)
 }
 
-function updatePlanReviewCurrent(name, reviewCurrent) {
-  let plans = getAllPlans()
-  for (const plan of plans) {
-    if (plan.name === name) {
-      plan.reviewCurrent = reviewCurrent
-      return
-    }
+function updatePlanReviewCurrent(reviewCurrent) {
+  let plan = getActivePlan()
+  if (plan !== undefined) {
+    plan.reviewCurrent = reviewCurrent
   }
-  throw new Error(`No plan named ${name}.`)
-
 }
 
 function Plan(name, book, batch, reviewAfterBatch, shuffle, data, order) {

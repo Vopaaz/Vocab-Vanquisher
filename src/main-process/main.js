@@ -4,7 +4,7 @@ import { getAllPlans, getActivePlan, createPlan, setActivePlanName } from "./pla
 function replyPlanInfo(event) {
   event.reply("plan-info", {
     allPlans: getAllPlans(),
-    activePlanName: getActivePlan()
+    activePlan: getActivePlan()
   })
 }
 
