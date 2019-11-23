@@ -1,8 +1,8 @@
 <template>
   <b-container class="table-container">
     <b-row>
-      <b-col offset="2" sm="8" md="8" lg="8" xl="8">
-        <b-table striped hover :items=" hasDef ? rows : noDefRows">
+      <b-col offset="1" sm="10" md="10" lg="10" xl="10">
+        <b-table striped hover :items=" hasDef ? rows : noDefRows" :fixed="true">
           <template v-slot:cell(definition)="data">
             <span v-html="data.value"></span>
           </template>
@@ -16,7 +16,7 @@
 export default {
   data: function() {
     return {
-      hasDef: false
+      hasDef: true
     };
   },
   computed: {
@@ -58,10 +58,22 @@ export default {
       return this.rows.map(rawRow => {
         return {
           vocabulary: rawRow.vocabulary,
-          definition: "" + "<br />".repeat(rawRow.definition.split("<br />").length - 1)
+          definition:
+            "" + "<br />".repeat(rawRow.definition.split("<br />").length)
         };
       });
     }
+  },
+  mounted() {
+    /* eslint-disable */
+    let self = this;
+    window.addEventListener("keypress", e => {
+      if (!self.$store.state.hasModal) {
+        if (e.keyCode === 32) {
+          self.hasDef = !self.hasDef;
+        }
+      }
+    });
   }
 };
 </script>

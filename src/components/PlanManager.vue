@@ -5,6 +5,8 @@
       title="Choose a Plan"
       size="auto"
       dismiss-on="backdrop close-button esc"
+      @open="commitOpen"
+      @close="commitClose"
     >
       <ui-select label="Choose a plan" :options="allPlans" v-model="planName"></ui-select>
       <ui-button color="primary" @click="onSwitch">Switch</ui-button>&nbsp;
@@ -35,6 +37,12 @@ export default {
     }
   },
   methods: {
+    commitOpen: function() {
+      this.$store.commit("openModal");
+    },
+    commitClose: function() {
+      this.$store.commit("closeModal");
+    },
     open: function() {
       this.$refs.managePlan.open();
     },
