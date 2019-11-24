@@ -99,10 +99,10 @@ if (isDevelopment) {
   }
 }
 
-// if (isDevelopment) {
-//   const Store = require('electron-store');
-//   const store = new Store();
-//   store.clear()
-// }
+if (isDevelopment) {
+  const Store = require('electron-store');
+  const store = new Store();
+  store.clear()
+}
 
 import "./main-process/main"

@@ -57,7 +57,9 @@ export default {
         return "";
       } else {
         let plan = this.$store.state.activePlan;
-        return `Progress: ${plan.current} / ${plan.data.length}`;
+        return `Progress: ${plan.current} / ${plan.data.length} ---  ${
+          this.$store.state.activePlan.on === "current" ? "Learning" : "Reviewing"
+        }`;
       }
     }
   },
