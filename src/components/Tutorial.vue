@@ -12,7 +12,7 @@
 
 <script>
 import { ipcRenderer } from "electron";
-/* eslint-disable */
+
 export default {
   data: function() {
     return {
@@ -25,12 +25,10 @@ export default {
     }
   },
   created: function() {
-    console.log(this.show);
     let self = this;
     ipcRenderer.send("ask-first-time");
     ipcRenderer.on("is-first-time", () => {
       self.show = true;
-      console.log(self.show);
     });
   }
 };

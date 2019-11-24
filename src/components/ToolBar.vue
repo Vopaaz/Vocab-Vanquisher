@@ -36,6 +36,10 @@ export default {
         {
           key: "manage",
           label: "Manage Plan"
+        },
+        {
+          key: "about",
+          label: "About"
         }
       ]
     };
@@ -59,7 +63,13 @@ export default {
   },
   methods: {
     onSelect: function(option) {
-      this.$emit(option.key);
+      if (option.key === "about") {
+        require("electron").shell.openExternal(
+          "https://github.com/Vopaaz/Vocab-Vanquisher"
+        );
+      } else {
+        this.$emit(option.key);
+      }
     }
   }
 };
