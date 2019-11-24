@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 const Store = require('electron-store');
 const store = new Store();
 import { readVocabBook } from "./reader";

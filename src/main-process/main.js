@@ -1,8 +1,16 @@
 import { ipcMain } from "electron";
-import { getAllPlans, getActivePlan, createPlan, setActivePlanName, deletePlan, updateActivePlan } from "./plan";
+import {
+  getAllPlans,
+  getActivePlan,
+  createPlan,
+  setActivePlanName,
+  deletePlan,
+  updateActivePlan
+} from "./plan";
+import { isFirstTime } from "./util";
 
 function replyPlanInfo(event, activePlan) {
-  if (activePlan === undefined){
+  if (activePlan === undefined) {
     activePlan = getActivePlan()
   }
   event.reply("plan-info", {
@@ -45,9 +53,15 @@ ipcMain.on("delete-plan", (event, arg) => {
 })
 
 ipcMain.on("update-active-plan", (event, plan) => {
-  if(getActivePlan().name !== plan.name){
+  if (getActivePlan().name !== plan.name) {
     throw Error("Updated plan is not the active plan.")
   }
   updateActivePlan(plan)
   replyPlanInfo(event, plan)
+})
+
+ipcMain.on("ask-first-time", (event) => {
+  if(isFirstTime()){
+    event.reply("is-first-time")
+  }
 })

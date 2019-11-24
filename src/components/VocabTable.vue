@@ -67,9 +67,10 @@ export default {
       });
     }
   },
-  mounted() {
+  created() {
     let self = this;
     window.addEventListener("keypress", e => {
+      e.preventDefault()
       if (!self.$store.state.hasModal) {
         if (e.keyCode === 32) {
           self.hasDef = !self.hasDef;

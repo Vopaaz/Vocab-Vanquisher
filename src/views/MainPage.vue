@@ -4,6 +4,7 @@
     <vocab-table />
     <plan-creator ref="planCreator" />
     <plan-manager ref="planManager" />
+    <tutorial />
     <ui-snackbar-container ref="snackbarContainer" position="center"></ui-snackbar-container>
   </div>
 </template>
@@ -13,6 +14,7 @@ import PlanCreator from "../components/PlanCreator";
 import PlanManager from "../components/PlanManager";
 import ToolBar from "../components/ToolBar";
 import VocabTable from "../components/VocabTable";
+import Tutorial from "../components/Tutorial";
 import { ipcRenderer } from "electron";
 
 export default {
@@ -25,7 +27,8 @@ export default {
     PlanCreator,
     PlanManager,
     ToolBar,
-    VocabTable
+    VocabTable,
+    Tutorial
   },
   mounted() {
     ipcRenderer.send("get-plan-info");
