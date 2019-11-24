@@ -25,15 +25,20 @@ export default new Vuex.Store({
     },
     nextBatch(state) {
       let plan = state.activePlan
-      if (plan.on === "current") {
+      if (plan.reviewAfterBatch === 0) {
         plan.current += plan.batch
-        if ((plan.current - plan.reviewCurrent) / plan.batch >= plan.reviewAfterBatch) {
-          plan.on = "review"
-        }
-      } else {
-        plan.reviewCurrent += plan.batch
-        if (plan.reviewCurrent >= plan.current) {
-          plan.on = "current"
+      }
+      else {
+        if (plan.on === "current") {
+          plan.current += plan.batch
+          if ((plan.current - plan.reviewCurrent) / plan.batch >= plan.reviewAfterBatch) {
+            plan.on = "review"
+          }
+        } else {
+          plan.reviewCurrent += plan.batch
+          if (plan.reviewCurrent >= plan.current) {
+            plan.on = "current"
+          }
         }
       }
       ipcRenderer.send("update-active-plan", plan)
