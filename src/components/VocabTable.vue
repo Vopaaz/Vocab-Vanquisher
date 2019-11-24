@@ -2,9 +2,7 @@
   <b-container class="table-container">
     <b-row>
       <b-col offset="1" sm="10" md="10" lg="10" xl="10">
-        <div v-if="$store.state.activePlan === undefined">
-          Create a plan to get started.
-        </div>
+        <div v-if="$store.state.activePlan === undefined">Create a plan to get started.</div>
         <b-table striped hover :items=" hasDef ? rows : noDefRows" :fixed="true">
           <template v-slot:cell(definition)="data">
             <span v-html="data.value"></span>
@@ -70,12 +68,13 @@ export default {
   created() {
     let self = this;
     window.addEventListener("keypress", e => {
-      e.preventDefault()
       if (!self.$store.state.hasModal) {
         if (e.keyCode === 32) {
+          e.preventDefault();
           self.hasDef = !self.hasDef;
         } else if (e.keyCode === 13) {
-          self.$store.commit("nextBatch")
+          e.preventDefault();
+          self.$store.commit("nextBatch");
         }
       }
     });
