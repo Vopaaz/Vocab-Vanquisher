@@ -5,12 +5,29 @@ Vocabulary builder simulating using a textbook and tear-it-down methodology.
 - [Vocab-Vanquisher](#vocab-vanquisher)
   - [Demo](#demo)
   - [Installation](#installation)
+    - [Windows Executable](#windows-executable)
+    - [Run from Source](#run-from-source)
   - [Methodology](#methodology)
   - [Road Map](#road-map)
 
 ## Demo
 
+![Demo](pics/demo.gif)
+
 ## Installation
+
+### Windows Executable
+
+Download the release
+
+### Run from Source
+
+```bash
+git clone git@github.com:Vopaaz/Vocab-Vanquisher.git
+cd Vocab-Vanquisher
+npm install
+npm run electron:serve
+```
 
 ## Methodology
 
