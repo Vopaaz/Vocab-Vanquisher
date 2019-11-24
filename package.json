@@ -1,7 +1,12 @@
 {
-  "name": "Vocab-Vanquisher",
+  "name": "vocab-vanquisher",
   "version": "0.1.0",
   "private": true,
+  "description": "Vocabulary builder simulating using a textbook and tear-it-down methodology.",
+  "author": {
+    "email": "liyifan945@163.com",
+    "name": "Vopaaz"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

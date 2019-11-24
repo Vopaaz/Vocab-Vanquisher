@@ -13,14 +13,24 @@ let win
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
 
+import { join } from "path";
+
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1000, height: 700, minWidth:1000, minHeight:700, webPreferences: {
+    width: 1000,
+    height: 700,
+    minWidth: 1000,
+    minHeight: 700,
+    /* global __static */
+    icon: join(__static, "icon.ico"),
+    webPreferences: {
       nodeIntegration: true
     }
   })
-  // win.removeMenu()
+  if (!isDevelopment) {
+    win.removeMenu()
+  }
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -89,10 +99,10 @@ if (isDevelopment) {
   }
 }
 
-if (isDevelopment) {
-  const Store = require('electron-store');
-  const store = new Store();
-  store.clear()
-}
+// if (isDevelopment) {
+//   const Store = require('electron-store');
+//   const store = new Store();
+//   store.clear()
+// }
 
 import "./main-process/main"
