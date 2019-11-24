@@ -14,6 +14,11 @@
 </template>
 
 <script>
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 export default {
   data: function() {
     return {
@@ -50,7 +55,7 @@ export default {
       res = res.map(rawRow => {
         return {
           vocabulary: rawRow[0],
-          definition: rawRow[1].replace(";", "<br />")
+          definition: rawRow[1].replaceAll(";", "<br />")
         };
       });
       return res;
