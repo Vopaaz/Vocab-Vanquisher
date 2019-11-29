@@ -15,8 +15,8 @@
 
 <script>
 String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
+  var target = this;
+  return target.replace(new RegExp(search, "g"), replacement);
 };
 
 export default {
@@ -38,18 +38,18 @@ export default {
       if (plan.on === "current") {
         for (
           let i = 0;
-          i < plan.batch && plan.current + i < plan.order.length;
+          i < plan.batch && plan.current + i < plan.data.length;
           i++
         ) {
-          res.push(plan.data[plan.order[plan.current + i]]);
+          res.push(plan.data[plan.current + i]);
         }
       } else {
         for (
           let i = 0;
-          i < plan.batch && plan.reviewCurrent + i < plan.order.length;
+          i < plan.batch && plan.reviewCurrent + i < plan.data.length;
           i++
         ) {
-          res.push(plan.data[plan.order[plan.reviewCurrent + i]]);
+          res.push(plan.data[plan.reviewCurrent + i]);
         }
       }
       res = res.map(rawRow => {

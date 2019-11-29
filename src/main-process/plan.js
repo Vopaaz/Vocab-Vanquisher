@@ -1,7 +1,8 @@
 const Store = require('electron-store');
 const store = new Store();
 import { readVocabBook } from "./reader";
-import { createOrder } from "./util";
+
+const _ = require("lodash")
 
 function getAllPlans() {
   let plans = store.get("plans")
@@ -52,8 +53,10 @@ function createPlan(name, book, batch, reviewAfterBatch, shuffle) {
       }
     }
     readVocabBook(book).then((content) => {
-      let order = createOrder(content.length, shuffle)
-      let newPlan = Plan(name, book, batch, reviewAfterBatch, shuffle, content, order)
+      if (shuffle) {
+        content = _.shuffle(content)
+      }
+      let newPlan = Plan(name, book, batch, reviewAfterBatch, content)
       plans.push(newPlan)
       store.set("plans", plans)
       setActivePlanName(name)
@@ -89,15 +92,13 @@ function deletePlan(plan) {
   setAllPlans(restPlans)
 }
 
-function Plan(name, book, batch, reviewAfterBatch, shuffle, data, order) {
+function Plan(name, book, batch, reviewAfterBatch, data) {
   return {
     name,
     book,
     batch,
     reviewAfterBatch,
-    shuffle,
     data,
-    order,
     on: "current",
     current: 0,
     reviewCurrent: 0
