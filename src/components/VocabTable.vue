@@ -3,7 +3,13 @@
     <b-row>
       <b-col offset="1" sm="10" md="10" lg="10" xl="10">
         <div v-if="$store.state.activePlan === undefined">Create a plan to get started.</div>
-        <b-table striped hover :items=" hasDef ? rows : noDefRows" :fixed="true">
+        <b-table
+          striped
+          hover
+          :items=" hasDef ? rows : noDefRows"
+          :fixed="true"
+          @row-contextmenu="onContextMenu"
+        >
           <template v-slot:cell(definition)="data">
             <span v-html="data.value"></span>
           </template>
@@ -19,10 +25,15 @@ String.prototype.replaceAll = function(search, replacement) {
   return target.replace(new RegExp(search, "g"), replacement);
 };
 
+const { remote } = require("electron");
+const { Menu, MenuItem } = remote;
+
 export default {
   data: function() {
     return {
-      hasDef: true
+      hasDef: true,
+      menu: null,
+      selecting: ""
     };
   },
   computed: {
@@ -70,6 +81,13 @@ export default {
       });
     }
   },
+  methods: {
+    onContextMenu: function(item, index, event) {
+      event.preventDefault();
+      this.selecting = item.vocabulary;
+      this.menu.popup({ window: remote.getCurrentWindow() });
+    }
+  },
   created() {
     let self = this;
     window.addEventListener("keypress", e => {
@@ -83,6 +101,20 @@ export default {
         }
       }
     });
+
+    this.menu = new Menu();
+    this.menu.append(
+      new MenuItem({
+        label: "Look up in the dictionary",
+        click() {
+          window.open(
+            "https://cn.bing.com/dict/search?q=" + self.selecting,
+            "_blank",
+            "nodeIntegration=no"
+          );
+        }
+      })
+    );
   }
 };
 </script>
