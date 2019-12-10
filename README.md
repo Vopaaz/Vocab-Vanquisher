@@ -18,7 +18,7 @@ Vocabulary builder simulating using a textbook and tear-it-down methodology.
 
 ### Windows Executable
 
-Download the [release](https://github.com/Vopaaz/Vocab-Vanquisher/releases/tag/v0.2.1).
+Download the [release](https://github.com/Vopaaz/Vocab-Vanquisher/releases/tag/v0.2.2).
 
 ### Run from Source
 

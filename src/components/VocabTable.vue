@@ -33,7 +33,8 @@ export default {
     return {
       hasDef: true,
       menu: null,
-      selecting: ""
+      selecting: "",
+      firstLookup: true
     };
   },
   computed: {
@@ -86,6 +87,17 @@ export default {
       event.preventDefault();
       this.selecting = item.vocabulary;
       this.menu.popup({ window: remote.getCurrentWindow() });
+    },
+    openLookupWindow: function() {
+      let self = this
+      window.open(
+        "https://cn.bing.com/dict/search?q=" +
+          self.selecting +
+          "&qs=n&form=Z9LH5&sp=-1&pq=" +
+          self.selecting,
+        "_blank",
+        "nodeIntegration=no"
+      );
     }
   },
   created() {
@@ -107,11 +119,19 @@ export default {
       new MenuItem({
         label: "Look up in the dictionary",
         click() {
-          window.open(
-            "https://cn.bing.com/dict/search?q=" + self.selecting,
-            "_blank",
-            "nodeIntegration=no"
-          );
+          if (self.firstLookup) {
+            self.firstLookup = false;
+            window.open(
+              "https://cn.bing.com/dict/?mkt=zh-cn",
+              "_blank",
+              "nodeIntegration=no"
+            );
+            setTimeout(() => {
+              self.openLookupWindow();
+            }, 1000);
+          } else {
+            self.openLookupWindow();
+          }
         }
       })
     );
