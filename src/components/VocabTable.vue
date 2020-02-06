@@ -85,16 +85,12 @@ export default {
   methods: {
     onContextMenu: function(item, index, event) {
       event.preventDefault();
-      this.selecting = item.vocabulary;
-      this.menu.popup({ window: remote.getCurrentWindow() });
-    },
-    openLookupWindow: function() {
-      let self = this
+      let selecting = item.vocabulary;
       window.open(
         "https://cn.bing.com/dict/search?q=" +
-          self.selecting +
+          selecting +
           "&qs=n&form=Z9LH5&sp=-1&pq=" +
-          self.selecting,
+          selecting,
         "_blank",
         "nodeIntegration=no"
       );
