@@ -86,7 +86,7 @@ export default {
     onContextMenu: function(item, index, event) {
       event.preventDefault();
       let selecting = item.vocabulary;
-      window.open(
+      let win = window.open(
         "https://cn.bing.com/dict/search?q=" +
           selecting +
           "&qs=n&form=Z9LH5&sp=-1&pq=" +
@@ -94,6 +94,7 @@ export default {
         "_blank",
         "nodeIntegration=no"
       );
+      win.focus()
     }
   },
   created() {
